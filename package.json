@@ -1,0 +1,36 @@
+{
+  "name": "backend-kebun-cbr",
+  "version": "1.0.0",
+  "description": "Typescript backend with Fastify",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon",
+    "start": "tsc && node build/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.11.9",
+    "nodemon": "^2.0.20",
+    "prisma": "^4.5.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "@fastify/autoload": "^5.4.1",
+    "@fastify/cors": "^8.1.1",
+    "@fastify/formbody": "^7.3.0",
+    "@fastify/helmet": "^10.0.2",
+    "@fastify/jwt": "^6.3.2",
+    "@prisma/client": "^4.5.0",
+    "@types/bcrypt": "^5.0.0",
+    "axios": "^1.1.3",
+    "bcrypt": "^5.1.0",
+    "fastify": "^4.9.2",
+    "form-data-encoder": "^2.1.3",
+    "formdata-node": "^4.4.1",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.5-lts.1"
+  }
+}

@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  Staff
+  Admin
+  SuperAdmin
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email     String   @unique
+  name      String?
+  password  String
+  avatar    String?
+  role      Role     @default(Staff)
+}
+
+model Variant {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  latin_name String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  Tree       Tree[]
+}
+
+model Tree {
+  id            Int       @id @default(autoincrement())
+  number        Int       @unique
+  variantId     Int       @default(1)
+  location      String?
+  planting_time DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  Variant       Variant   @relation(fields: [variantId], references: [id])
+  Logs          Log[]
+  Photos        Photo[]
+}
+
+model Log {
+  id          Int       @id @default(autoincrement())
+  treeId      Int       @unique
+  treatmentId Int       @unique
+  userId      Int       @unique
+  time        DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Tree        Tree      @relation(fields: [treeId], references: [id])
+  Treatment   Treatment @relation(fields: [treatmentId], references: [id])
+}
+
+model Treatment {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  type      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Logs      Log[]
+}
+
+model Photo {
+  id        Int      @id @default(autoincrement())
+  treeId    Int      @unique
+  url       String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Tree      Tree     @relation(fields: [treeId], references: [id])
+}
