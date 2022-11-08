@@ -4,9 +4,6 @@ import autoLoad from "@fastify/autoload";
 import formBodyPlugin from "@fastify/formbody";
 import fastifyHelmet from "@fastify/helmet";
 import fastifyCors from "@fastify/cors";
-// import { prisma } from "./helpers/prisma";
-import { readFile } from "fs/promises";
-import { createReadStream } from "fs";
 import { PrismaClient } from "@prisma/client";
 
 const path = require("path");
