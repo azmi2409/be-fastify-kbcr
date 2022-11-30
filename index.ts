@@ -5,15 +5,13 @@ import formBodyPlugin from "@fastify/formbody";
 import fastifyHelmet from "@fastify/helmet";
 import fastifyCors from "@fastify/cors";
 import { PrismaClient } from "@prisma/client";
+import { join } from "path";
 
-const path = require("path");
 const server = fastify();
-const axios = require("axios");
-const FormData = require("form-data");
 const prisma = new PrismaClient();
 async function main() {
   server.register(autoLoad, {
-    dir: path.join(__dirname, "plugins"),
+    dir: join(__dirname, "plugins"),
   });
   server.register(formBodyPlugin);
   server.register(fastifyCors);
