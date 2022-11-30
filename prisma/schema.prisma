@@ -16,6 +16,12 @@ enum Role {
   SuperAdmin
 }
 
+enum TreeStatus {
+  Healthy
+  Sick
+  Died
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -25,6 +31,8 @@ model User {
   password  String
   avatar    String?
   role      Role     @default(Staff)
+
+  Schedules Schedule[]
 }
 
 model Variant {
@@ -33,48 +41,93 @@ model Variant {
   latin_name String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  Tree       Tree[]
+
+  Tree Tree[]
 }
 
 model Tree {
   id            Int       @id @default(autoincrement())
   number        Int       @unique
-  variantId     Int       @default(1)
+  variantId     Int?
   location      String?
   planting_time DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  Variant       Variant   @relation(fields: [variantId], references: [id])
-  Logs          Log[]
-  Photos        Photo[]
+
+  Status    Status?
+  Photos    Photo[]
+  Harvests  Harvest[]
+  Schedules Schedule[]
+  Variant   Variant?   @relation(fields: [variantId], references: [id])
 }
 
 model Log {
-  id          Int       @id @default(autoincrement())
-  treeId      Int       @unique
-  treatmentId Int       @unique
-  userId      Int       @unique
-  time        DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  Tree        Tree      @relation(fields: [treeId], references: [id])
-  Treatment   Treatment @relation(fields: [treatmentId], references: [id])
+  scheduleId  Int      @id @unique
+  done        Boolean  @default(true)
+  executor    String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  Schedule Schedule @relation(fields: [scheduleId], references: [id])
 }
 
 model Treatment {
   id        Int      @id @default(autoincrement())
   name      String   @unique
-  type      String   @unique
+  type      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Logs      Log[]
+
+  Schedules Schedule[]
 }
 
 model Photo {
-  id        Int      @id @default(autoincrement())
-  treeId    Int      @unique
-  url       String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Tree      Tree     @relation(fields: [treeId], references: [id])
+  id          Int      @id @default(autoincrement())
+  treeId      Int
+  url         String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  Tree Tree @relation(fields: [treeId], references: [id])
+}
+
+model Harvest {
+  id          Int      @id @default(autoincrement())
+  treeId      Int
+  weight      Int
+  description String?
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  Tree Tree @relation(fields: [treeId], references: [id])
+}
+
+model Schedule {
+  id          Int      @id @default(autoincrement())
+  treeId      Int
+  treatmentId Int
+  date        DateTime @default(now())
+  description String?
+  userId      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  Logs Log[]
+
+  User      User      @relation(fields: [userId], references: [id])
+  Tree      Tree      @relation(fields: [treeId], references: [id])
+  Treatment Treatment @relation(fields: [treatmentId], references: [id])
+}
+
+model Status {
+  treeId      Int        @id @unique
+  status      TreeStatus @default(Healthy)
+  description String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  Tree Tree @relation(fields: [treeId], references: [id])
 }
