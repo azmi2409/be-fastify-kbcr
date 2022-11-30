@@ -6,12 +6,19 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon index.ts",
-    "start": "tsc && node build/index.js"
+    "start": "tsc && node build/index.js",
+    "migrate": "npx prisma migrate dev --name init",
+    "generate": "npx prisma generate",
+    "seed": "npx ts-node prisma/seed.ts",
+    "studio": "npx prisma studio",
+    "reset": "npx prisma migrate reset",
+    "deploy": "npx prisma migrate deploy"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.11.9",
+    "dotenv": "^16.0.3",
     "nodemon": "^2.0.20",
     "prisma": "^4.5.0",
     "ts-node": "^10.9.1",
@@ -31,6 +38,7 @@
     "form-data-encoder": "^2.1.3",
     "formdata-node": "^4.4.1",
     "jsonwebtoken": "^8.5.1",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+    "zod": "^3.19.1"
   }
 }
