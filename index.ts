@@ -6,6 +6,8 @@ import fastifyHelmet from "@fastify/helmet";
 import fastifyCors from "@fastify/cors";
 import { PrismaClient } from "@prisma/client";
 import { join } from "path";
+import httpStatus from "http-status";
+import loginRoute from "./routes/auth.route";
 
 const server = fastify();
 const prisma = new PrismaClient();
@@ -13,10 +15,14 @@ async function main() {
   server.register(autoLoad, {
     dir: join(__dirname, "plugins"),
   });
-  server.register(formBodyPlugin);
   server.register(fastifyCors);
   server.register(fastifyHelmet);
   // server.register(userRouter, { prefix: "/api/user" });
+  // server.register(loginRoute, { prefix: "/api/v1" });
+
+  server.get("/api/v1", async (request, reply) => {
+    reply.status(httpStatus.OK).send({ message: "Hello World!" });
+  });
 
   server.listen({ port: 4000, host: "0.0.0.0" }, (err, address) => {
     if (err) {

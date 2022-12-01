@@ -8,23 +8,28 @@ import {
   FastifyReply,
 } from "fastify";
 
-const jwtDecorator = fp(
-  async (fastify: FastifyInstance, opts: FastifyPluginOptions) => {
-    fastify.register(fastifyJwt, {
-      secret: env.JWT_SECRET,
-    });
-
-    fastify.decorate(
-      "authenticate",
-      async (request: FastifyRequest, reply: FastifyReply) => {
-        try {
-          await request.jwtVerify();
-        } catch (err) {
-          reply.send(err);
-        }
-      }
-    );
+declare module "fastify" {
+  interface FastifyInstance {
+    readonly authenticate: (
+      request: FastifyRequest,
+      reply: FastifyReply
+    ) => Promise<void>;
   }
-);
+}
 
-export default jwtDecorator;
+export default fp((fastify: FastifyInstance, opts: FastifyPluginOptions) => {
+  fastify.register(fastifyJwt, {
+    secret: env.JWT_SECRET,
+  });
+
+  fastify.decorate(
+    "authenticate",
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      try {
+        await request.jwtVerify();
+      } catch (err) {
+        reply.send(err);
+      }
+    }
+  );
+});
