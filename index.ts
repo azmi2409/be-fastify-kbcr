@@ -18,8 +18,6 @@ async function main() {
   server.register(fastifyHelmet);
   // server.register(userRouter, { prefix: "/api/user" });
 
-  //test
-
   server.listen({ port: 4000, host: "0.0.0.0" }, (err, address) => {
     if (err) {
       console.error(err);
