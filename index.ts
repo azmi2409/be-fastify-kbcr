@@ -6,6 +6,7 @@ import fastifyCors from "@fastify/cors";
 import { PrismaClient } from "@prisma/client";
 import { join } from "path";
 import httpStatus from "http-status";
+import env from "./configs/config";
 
 const server = fastify();
 const prisma = new PrismaClient();
@@ -25,7 +26,7 @@ async function main() {
     reply.status(httpStatus.OK).send({ message: "Hello World!" });
   });
 
-  server.listen({ port: 4000, host: "0.0.0.0" }, (err, address) => {
+  server.listen({ port: env.PORT, host: env.HOST }, (err, address) => {
     if (err) {
       console.error(err);
       process.exit(1);

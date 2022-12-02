@@ -23,6 +23,10 @@ const loginRoute = async (fastify: FastifyInstance) => {
   });
 };
 
+/**
+ * Force Change Password Route
+ */
+
 const chPasswordRoute = async (fastify: FastifyInstance) => {
   fastify.route({
     method: "POST",
@@ -31,7 +35,10 @@ const chPasswordRoute = async (fastify: FastifyInstance) => {
   });
 };
 
+const routeArray = [loginRoute];
+
 export default fp(async (fastify: FastifyInstance) => {
-  fastify.register(loginRoute, { prefix: "/api/v1" });
-  fastify.register(chPasswordRoute, { prefix: "/api/v1" });
+  routeArray.forEach((route) => {
+    fastify.register(route, { prefix: "/api/v1" });
+  });
 });
