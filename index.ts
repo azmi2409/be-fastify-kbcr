@@ -1,19 +1,20 @@
 import fastify from "fastify";
 import autoLoad from "@fastify/autoload";
 // import userRouter from "./routes/user.route";
-import formBodyPlugin from "@fastify/formbody";
 import fastifyHelmet from "@fastify/helmet";
 import fastifyCors from "@fastify/cors";
 import { PrismaClient } from "@prisma/client";
 import { join } from "path";
 import httpStatus from "http-status";
-import loginRoute from "./routes/auth.route";
 
 const server = fastify();
 const prisma = new PrismaClient();
 async function main() {
   server.register(autoLoad, {
     dir: join(__dirname, "plugins"),
+  });
+  server.register(autoLoad, {
+    dir: join(__dirname, "routes"),
   });
   server.register(fastifyCors);
   server.register(fastifyHelmet);

@@ -17,19 +17,21 @@ declare module "fastify" {
   }
 }
 
-export default fp((fastify: FastifyInstance, opts: FastifyPluginOptions) => {
-  fastify.register(fastifyJwt, {
-    secret: env.JWT_SECRET,
-  });
+export default fp(
+  async (fastify: FastifyInstance, opts: FastifyPluginOptions) => {
+    fastify.register(fastifyJwt, {
+      secret: env.JWT_SECRET,
+    });
 
-  fastify.decorate(
-    "authenticate",
-    async (request: FastifyRequest, reply: FastifyReply) => {
-      try {
-        await request.jwtVerify();
-      } catch (err) {
-        reply.send(err);
+    fastify.decorate(
+      "authenticate",
+      async (request: FastifyRequest, reply: FastifyReply) => {
+        try {
+          await request.jwtVerify();
+        } catch (err) {
+          reply.send(err);
+        }
       }
-    }
-  );
-});
+    );
+  }
+);
